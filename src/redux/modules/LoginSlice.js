@@ -1,7 +1,6 @@
 import { createSlice, current } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-// import { setCookie } from "../../cookie/cookie";
 
 const initialState = {
   account : [],
@@ -15,14 +14,25 @@ export const __userLogin = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const data = await axios.post("http://localhost:3001/account", payload);
-      // const accessToken = data.data.token;
-      // setCookie("is_login", `${accessToken}`); 
+      const accessToken = data.headers.authorization;
+      const refreshToken = data.headers["refresh-token"];
+      if (data.status === 200 || data.status === 201) {
+        window.localStorage.setItem("accessToken", accessToken);
+        window.localStorage.setItem("refreshToken", refreshToken);
+        window.localStorage.setItem("nickname", data.data.data.nickname);
+        alert("로그인 성공");
+        window.location.replace("/")}
+
       return thunkAPI.fulfillWithValue(payload)
     } catch (error) {
+      if (400 < error.data.status && error.data.status < 500) {
+        window.location.reload();
+        alert("로그인 실패")
+      }
       return thunkAPI.rejectWithValue(error);
     }
   }
-)
+);
 
 export const  __userSignUpGet = createAsyncThunk(
   "account/userSignUpGet",
@@ -100,3 +110,8 @@ export const LoginSlice = createSlice({
 export const { userLogin, userSignUp, userSignUpGet } = LoginSlice.actions;
 // reducer 는 configStore에 등록하기 위해 export default 합니다.
 export default LoginSlice.reducer;
+
+
+// import { setCookie } from "../../cookie/cookie";
+// const accessToken = data.data.token;
+// setCookie("is_login", `${accessToken}`); 

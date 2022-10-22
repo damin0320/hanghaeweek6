@@ -12,10 +12,10 @@ const SignIn = () => {
     userId: "",
     password: "",
   };
-  const [member, setMember] = useState(initialState);
+  const [login, setLogin] = useState(initialState);
   const onChangeHandler = (event) => {
     const {name, value} = event.target
-    setMember({...member, [name] : value})
+    setLogin({...login, [name] : value})
   }
 
   const onSubmitHandler = (event) => {
@@ -23,8 +23,8 @@ const SignIn = () => {
     const obj = {
       id : 1,
       //임시
-      userId: member.userId,
-      password: member.password,
+      userId: login.userId,
+      password: login.password,
     }
     dispatch(__userLogin(obj))
     
@@ -33,8 +33,8 @@ const SignIn = () => {
   return (
     <div>
     <h1>로그인</h1>
-    <div><input name="userId" value={member.userId} placeholder='아이디' onChange={onChangeHandler}></input></div>
-    <div><input name="password" value={member.password} placeholder='비밀번호' onChange={onChangeHandler}></input></div>
+    <div><input name="userId" value={login.userId} placeholder='아이디' onChange={onChangeHandler}></input></div>
+    <div><input name="password" value={login.password} placeholder='비밀번호' onChange={onChangeHandler}></input></div>
     <button onClick={onSubmitHandler}>로그인</button>
     <button type="submit" onClick={() => {
             navigate("/signup");
