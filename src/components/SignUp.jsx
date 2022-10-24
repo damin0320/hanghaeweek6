@@ -113,11 +113,11 @@ useEffect(() => {
   return (
     <div>    
     <h1>회원가입</h1>
-    <div><input style={{width:300}} name='userid' onChange={onChangeHandler} placeholder="아이디는 영문자로 시작하는 영문자 또는 숫자 6~20자"></input> <button type="button" onClick={onCheckId}>중복확인</button></div>
-    <div><input style={{width:300}} name='nickname' onChange={onChangeHandler} placeholder="닉네임은 영문자로 시작하는 영문자 또는 숫자 6~20자"></input> <button type="button" onClick={onCheckname}>중복확인</button></div>
-    <div><input style={{width:300}} name='password' onChange={onChangeHandler} placeholder="비밀번호는 8 ~ 16자 영문, 숫자 조합
+    <div><input type="text" style={{width:300}} name='userid' onChange={onChangeHandler} placeholder="아이디는 영문자로 시작하는 영문자 또는 숫자 6~20자"></input> <button type="button" onClick={onCheckId}>중복확인</button></div>
+    <div><input type="text" style={{width:300}} name='nickname' onChange={onChangeHandler} placeholder="닉네임은 영문자로 시작하는 영문자 또는 숫자 6~20자"></input> <button type="button" onClick={onCheckname}>중복확인</button></div>
+    <div><input type="password" style={{width:300}} name='password' onChange={onChangeHandler} placeholder="비밀번호는 8 ~ 16자 영문, 숫자 조합
 "></input></div>
-    <div><input style={{width:300}} name='passwordconfirm' placeholder='비밀번호 확인' onChange={onChangeHandler}></input></div>
+    <div><input type="password" style={{width:300}} name='passwordconfirm' placeholder='비밀번호 확인' onChange={onChangeHandler}></input></div>
     <div>    <button onClick={onSubmitHandler}>회원가입</button>    <button onClick={() => {
             navigate("/");
           }}>뒤로가기</button></div>

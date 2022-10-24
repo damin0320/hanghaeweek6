@@ -138,8 +138,3 @@ export const LoginSlice = createSlice({
 export const { userLogin, userSignUp, userSignUpGet } = LoginSlice.actions;
 // reducer 는 configStore에 등록하기 위해 export default 합니다.
 export default LoginSlice.reducer;
-
-
-// import { setCookie } from "../../cookie/cookie";
-// const accessToken = data.data.token;
-// setCookie("is_login", `${accessToken}`); 
