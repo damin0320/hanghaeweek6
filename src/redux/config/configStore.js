@@ -17,7 +17,8 @@ import login from "../modules/LoginSlice";
  * 이것을 각각 모듈로 구현한 다음에 아래 코드로 2개의 모듈을 스토어에 연결해준 것 입니다.
  */
 const store = configureStore({
-  reducer: { movies: movies, comments: comments, login : login },
+  // reducer: { movies: movies,  login : login , comments: comments},
+  reducer: { movies: movies , comments: comments},
   //dev tool을 개발 환경에서만 설정
   devTools: process.env.REACT_APP_MOD !== "production",
 });

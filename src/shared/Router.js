@@ -19,12 +19,12 @@ const Router = () => {
 
         {/* 무비 리스트 생성 페이지로 이동하기 */}
         <Route path='/addmovie' element={<AddMovie />} />
-
+        
         {/* 게시글 홈으로 이동하기 */}
         <Route path='/movielist' element={<MovieList />} />
 
         {/* 무비리스트 카드별 상세보기 페이지로 이동하기 */}
-        <Route path='/moviedetail/:id' element={<MovieDetail />} />
+        <Route path='/MovieDetail/:id' element={<MovieDetail />} />
       </Routes>
     </BrowserRouter>
   );
