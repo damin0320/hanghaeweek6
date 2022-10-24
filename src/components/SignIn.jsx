@@ -33,8 +33,8 @@ const SignIn = () => {
   return (
     <div>
     <h1>로그인</h1>
-    <div><input name="userid" value={login.userid} placeholder='아이디' onChange={onChangeHandler}></input></div>
-    <div><input name="password" value={login.password} placeholder='비밀번호' onChange={onChangeHandler}></input></div>
+    <div><input type="text" name="userid" value={login.userid} placeholder='아이디' onChange={onChangeHandler}></input></div>
+    <div><input type="password" name="password" value={login.password} placeholder='비밀번호' onChange={onChangeHandler}></input></div>
     <button onClick={onSubmitHandler}>로그인</button>
     <button type="submit" onClick={() => {
             navigate("/signup");
