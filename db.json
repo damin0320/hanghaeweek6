@@ -2,10 +2,10 @@
   "account": [
     {
       "id": 0,
-      "userId": "abcd1234",
+      "userid": "abcd1234",
       "nickname": "abcd1234",
       "password": "abcd1234",
-      "password2": "abcd1234"
+      "passwordconfirm": "abcd1234"
     }
   ]
 }
