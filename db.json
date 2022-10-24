@@ -1,0 +1,11 @@
+{
+  "account": [
+    {
+      "id": 0,
+      "userid": "abcd1234",
+      "nickname": "abcd1234",
+      "password": "abcd1234",
+      "passwordconfirm": "abcd1234"
+    }
+  ]
+}
