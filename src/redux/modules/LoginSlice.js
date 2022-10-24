@@ -1,25 +1,26 @@
 import { createSlice, current } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { setCookie } from "../../cookie/cookie";
 
 const initialState = {
   account : [],
   isLoading : false,
   error : null
 };
-
+const SERVICE_URL = "http://34.205.33.66:8080"
 export const __userLogin = createAsyncThunk(
   "account/userLogin",
   // login : reducer name, 경로 정해줘야
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.post("http://52.206.73.25:8080/account/login", payload);
+      const data = await axios.post(`${SERVICE_URL}/account/login`, payload);
       const Access_Token = data.headers.access_token;
       // const refreshToken = data.headers["refresh-token"];
       if (data.status === 200 || data.status === 201) {
-        window.localStorage.setItem("Access_Token", Access_Token);
+        setCookie("Access_Token", Access_Token);
         // window.localStorage.setItem("refreshToken", refreshToken);
-        window.localStorage.setItem("nickname", data.data.data);
+        setCookie("nickname", data.data.data);
         alert("로그인 성공");
         window.location.replace("/movielist")
       }
@@ -40,7 +41,7 @@ export const  __checkId = createAsyncThunk(
   // type
   async (payload, thunkAPI) => {
     try {
-    const data = await axios.post("http://52.206.73.25:8080/account/checkid", {userid: payload})
+    const data = await axios.post(`${SERVICE_URL}/account/checkid`, {userid: payload})
       return thunkAPI.fulfillWithValue(data.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -52,7 +53,7 @@ export const  __checkName = createAsyncThunk(
   "account/checkName",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.post("http://52.206.73.25:8080/account/checkname", {nickname: payload})
+      const data = await axios.post(`${SERVICE_URL}/account/checkname`, {nickname: payload})
       // 415는 타입에러. {}로 감싸서 보낸다.
       return thunkAPI.fulfillWithValue(data.data)
     } catch (error) {
@@ -65,7 +66,7 @@ export const  __userSignUp = createAsyncThunk(
   "account/userSignUp",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.post("http://52.206.73.25:8080/account/signup", payload)
+      const data = await axios.post(`${SERVICE_URL}/account/signup`, payload)
       return thunkAPI.fulfillWithValue(data.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -124,7 +125,7 @@ export const LoginSlice = createSlice({
     [__userSignUp.fulfilled]: (state, action) => {
       state.isLoading = false; // 네트워크 요청이 끝났으니, false로 변경합니다.
       state.isSuccess = false;
-      state.account=action.payload; // 
+      state.account=action.payload; //
     },
     [__userSignUp.rejected]: (state, action) => {
       state.isLoading = false; // 에러가 발생했지만, 네트워크 요청이 끝났으니, false로 변경합니다.

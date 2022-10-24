@@ -1,8 +1,8 @@
 import React from 'react'
-
+import { getCookie, delCookie } from '../cookie/cookie'
 const MovieList = () => {
   const onLogoutHandler = () => {
-    window.localStorage.clear()
+    delCookie("Access_Token")
     alert("이용하시려면 다시 로그인 해주세요")
     window.location.replace("/")
   }
