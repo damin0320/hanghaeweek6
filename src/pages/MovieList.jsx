@@ -1,22 +1,19 @@
-import React, { useState} from "react";
+import React from "react";
 import styled from "styled-components";
 import Header from "../components/Header"
 import { useDispatch, useSelector } from "react-redux";
 import { __addmovies, __getmovies} from "../redux/modules/MoviesSlice"
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-  
   const MovieList = () => {
+
   const navigator = useNavigate();
-  
   const dispatch = useDispatch();
-  const {id}= useParams();
   const movies = useSelector((state) => state.movies.movies) 
-    console.log("무비스",movies)
-  
+    
   useEffect(() => {
-    dispatch(__getmovies(id));
+    dispatch(__getmovies());
   }, [dispatch]);
   
   return (
@@ -26,7 +23,6 @@ import { useEffect } from "react";
       <StContainer>
           {
             movies.map((movie)=>{
-              // console.log("id",movie.id)
               return (
                 <StlistBox onClick={()=>{navigator(`/MovieDetail/${movie.id}`)}} key={movie.id}>
                   <StImagebox></StImagebox>
@@ -38,7 +34,6 @@ import { useEffect } from "react";
               )
             })
           }
-        
       </StContainer>
     </>
   )

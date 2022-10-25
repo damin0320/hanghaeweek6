@@ -1,8 +1,7 @@
-import React from "react";
 import { useParams , useNavigate} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { __getmovie , __deletemovie} from "../redux/modules/MoviesSlice"
+import { useEffect, useState } from "react";
+import { __getmovies , __deletemovies , __editmovies} from "../redux/modules/MoviesSlice"
 import styled from "styled-components";
 import Header from "../components/Header"
 import Comments from "../components/Comments"
@@ -11,42 +10,69 @@ import Comments from "../components/Comments"
   const navigator = useNavigate();
   const dispatch = useDispatch();
   const {movies} = useSelector((state) => state.movies)
-  const  myidid  = useParams()
+  const  postid  = useParams()
+  
 
   useEffect(() => {
-    dispatch(__getmovie());
+    dispatch(__getmovies(postid));
   }, [dispatch]);
-  
-  // 파람스 아이디가 몇번째(indexId) 배열에 있는지 찾는부분 movies[indexId]
-  const indexId = movies.findIndex((item) => {
-    if (item.id == myidid.id) {
-    return true;
-    }
-    return false;
-    });
 
-  // 댓글 삭제 버튼
+
+  // 댓삭제 버튼
   const movieDelete = () => {
-    dispatch(__deletemovie(myidid.id))
+    dispatch(__deletemovies(postid.id))
     navigator ("/movielist")
   }
   
+  // 댓수정 시작
+  const [editContent, setEditContent] = useState({
+    title:"",
+    content:"",
+    id:postid.id,
+  });
+  
+  const onClickEditHandler = () => {
+    dispatch(
+      __editmovies(editContent)
+    )
+  }
+  
+  const [toggle, setToggle] = useState(false);
+  
+  const editToggleHandler = () =>{
+    toggle ? setToggle(false) : setToggle(true);
+  }
   return (
     <>
     <Header/>
     {
     <Stcontainer>
-      <div key={movies[indexId].id}>
+      {
+        movies.map((movie) => (movie.id === Number(postid.id) ) && (
+        <div key={movie.id}>
         <StThumnail></StThumnail>
-        <Stbuttonbox>
-            <Stbutton1 onClick={() => movieDelete(myidid)}>삭제</Stbutton1>
-            {/* <Stbutton2 onClick={() => movieEdit(myidid)}>수정</Stbutton2> */}
-        </Stbuttonbox>
-        <h1>제목 :{movies.title}</h1>
-        <div>내용 :{movies.content}</div>
-      </div>  
+        <h1>{movie.title}</h1>
+        <div>{movie.content}</div>
+          <Stbuttonbox>
+              <Stbutton onClick={() => movieDelete(postid)}>삭제하기</Stbutton>
+              <Stbutton onClick={editToggleHandler} >수정하기</Stbutton>
+              <Stbutton onClick={() => {navigator("/MovieList")}}>뒤로가기</Stbutton>
+          </Stbuttonbox>
+        </div>  
+        ))
+      }
+      
     </Stcontainer>
     }
+    {toggle ? (
+      <div>
+      <input type="text" name="content" onChange={(event) => {setEditContent({
+        ...editContent, content:event.target.value
+      })}}/>
+      <button onClick={onClickEditHandler}>수정완료</button>
+    </div>
+    ):null 
+    } 
     <Comments />
     </>
   )
@@ -77,8 +103,8 @@ const Stbuttonbox = styled.div `
   justify-content: space-between;
   margin-top:20px;
 `
-const Stbutton1 = styled.button`
-  width:290px;
+const Stbutton = styled.button`
+  width:190px;
   height:50px;
   text-align:center;
   border:none;
@@ -86,12 +112,25 @@ const Stbutton1 = styled.button`
   border-radius: 6px;
   cursor:pointer;
 `
-const Stbutton2 = styled.button`
-  width:290px;
-  height:50px;
-  text-align:center;
-  border:none;
-  background-color:#94B49F;
-  border-radius: 6px;
-  cursor:pointer;
-`
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 파람스 아이디가 몇번째(indexId) 배열에 있는지 찾는부분 movies[indexId]
+  // const indexId = movies.findIndex((item) => {
+  //   if (item.id == myidid.id) {
+      
+  //   return true;
+  //   }
+  //   return false;
+  //   });
+  //   console.log(indexId)

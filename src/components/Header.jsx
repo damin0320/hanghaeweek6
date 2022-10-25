@@ -4,13 +4,7 @@ import { IoMdHome, IoLogoGithub } from "react-icons/io";
 const Header = () => {
   return (
     <HeadContainer>
-      <HeadLeft onClick={()=>{}}> <IoMdHome className="head-ico" /> <Div>W5:Todo-list</Div></HeadLeft>
-      <HeadRight1><Div>login</Div>
-      <HeadRight2><IoLogoGithub className="head-ico" /></HeadRight2>
-      </HeadRight1>
-      <HeadRight1><Div>logout</Div>
-      <HeadRight2><IoLogoGithub className="head-ico" /></HeadRight2>
-      </HeadRight1>
+     
     </HeadContainer>
   )
 }
