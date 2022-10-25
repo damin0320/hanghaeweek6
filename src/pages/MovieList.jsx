@@ -50,7 +50,8 @@ import { useEffect } from "react";
 
 
 
-
+  )
+        }
 export default MovieList
 const StContainer = styled.div`
   margin:0 auto;
