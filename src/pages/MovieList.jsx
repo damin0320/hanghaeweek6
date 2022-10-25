@@ -3,10 +3,17 @@ import styled from "styled-components";
 import Header from "../components/Header"
 import { useDispatch, useSelector } from "react-redux";
 import { __addmovies, __getmovies} from "../redux/modules/MoviesSlice"
+import { getCookie, delCookie } from '../cookie/cookie'
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
   const MovieList = () => {
+    
+  const onLogoutHandler = () => {
+    delCookie("Access_Token")
+    alert("이용하시려면 다시 로그인 해주세요")
+    window.location.replace("/")
+  }
 
   const navigator = useNavigate();
   const dispatch = useDispatch();
@@ -19,6 +26,9 @@ import { useEffect } from "react";
   return (
     <>
       <Header />
+      
+      <button onClick={onLogoutHandler}>로그아웃</button>
+      
       {/* 리스트가 뿌려짐 */}
       <StContainer>
           {
@@ -36,8 +46,10 @@ import { useEffect } from "react";
           }
       </StContainer>
     </>
-  )
-}
+
+
+
+
 
 export default MovieList
 const StContainer = styled.div`

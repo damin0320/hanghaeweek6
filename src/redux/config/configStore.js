@@ -7,7 +7,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import movies from "../modules/MoviesSlice";
 import comments from "../modules/CommentsSlice";
-import login from "../modules/LoginSlice";
+import account from "../modules/LoginSlice";
 
 /**
  * 모듈(Slice)이 여러개인 경우
@@ -17,10 +17,11 @@ import login from "../modules/LoginSlice";
  * 이것을 각각 모듈로 구현한 다음에 아래 코드로 2개의 모듈을 스토어에 연결해준 것 입니다.
  */
 const store = configureStore({
-  // reducer: { movies: movies,  login : login , comments: comments},
-  reducer: { movies: movies , comments: comments},
+
+  reducer: { movies: movies, comments: comments, account : account },
+
   //dev tool을 개발 환경에서만 설정
-  devTools: process.env.REACT_APP_MOD !== "production",
+  // devTools: process.env.REACT_APP_MOD !== "production",
 });
 
 export default store;
