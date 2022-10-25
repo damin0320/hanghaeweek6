@@ -1,7 +1,7 @@
 import React, { useState} from "react";
 import Header from "../components/Header"
 import styled from "styled-components"
-import { useNavigate} from "react-router-dom";
+import { useNavigate, useParams} from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { __addmovies, __getmovies} from "../redux/modules/MoviesSlice"
@@ -11,15 +11,17 @@ import { __addmovies, __getmovies} from "../redux/modules/MoviesSlice"
 const AddMovie = () => {
   // 디스패치를 사용하겠다.
   const dispatch = useDispatch();
-  
+  const {id} = useParams()
   const navigate = useNavigate();
   // setMovieContent({...movieContent,file:fileimage})
+  const [prevImg, setPrevImg] = useState("")
   const [movieContent, setMovieContent] =useState ({
     title: "",
     content:"",
     id:0,
     url:""
   })
+  
   
   const {movies} = useSelector((state) => state.movies)
 
@@ -28,25 +30,38 @@ const AddMovie = () => {
     setMovieContent({...movieContent,[name]: value,});
     };
   
-  // 인풋값 등록버튼
+
+    const obj = {
+      title : movieContent.title,
+      content: movieContent.content,
+      url : movieContent.url,
+      id:Date.now()
+    }
+ 
+    // 사진 등록 및 미리보기
+    const postUrl = () => {
+      if(obj.url === "" || obj.url === undefined) {
+        return alert ("URL을 입력해주세요!")
+      }else{
+        setPrevImg(obj.url)
+        dispatch(__addmovies(obj.url))
+        alert("등록이 완료되었습니다.")
+      }
+    }
+ 
+    // 인풋값 등록버튼
   const onClickButton=(event)=> {
     event.preventDefault();
     if (movieContent.content.trim() === "" || movieContent.title.trim() === "" )  {
       return alert("모든 항목을 입력해주세요.");
     }     
-        const obj = {
-          title : movieContent.title,
-          content: movieContent.content,
-          id:Date.now()
-        }
         dispatch(__addmovies(obj))
         setMovieContent({
           title: "",
           content: "",
         });
         navigate("/movielist");
-  }
-  
+}
   //사진등록 토클
   const [toggle, setToggle] = useState(false);
   
@@ -54,23 +69,22 @@ const AddMovie = () => {
     toggle ? setToggle(false) : setToggle(true);
   }
   
-  
   return (
     <>
       <Header />
       {/* 썸네일,타이틀 */}
-      <StContainer>
-
-        <Stcontainerbox>
-        <StThumbNail></StThumbNail>
+      <StContainer><Stcontainerbox>
+        <StThumbNail>
+          <img src={prevImg} />
+        </StThumbNail>
          <Stbutton onClick={editToggleHandler}>사진등록하기</Stbutton>  
          {toggle ? (
             <div>
               <StThum><img src="/show.jpg" alt="안내이미지" /></StThum>
               <P>구글에서 원하시는 이미지 검색후 우클릭하여 주소를 복사해주세요</P>
               <PutBox>
-                <Input type="text" name="img"/>
-                <Button>등록완료</Button>
+                <Input type="text" value={movies.url} name="url" placeholder="사진 URL을 등록해주세요!" onChange={onChangeHandler}/>
+                <Button type="button" onClick={postUrl}>등록완료</Button>
               </PutBox>
           </div>
           ):null 
@@ -150,7 +164,7 @@ const StThum =styled.div`
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-  },
+  }
 `
 const InputGroup = styled.div`
   display: flex;
@@ -193,7 +207,7 @@ const StThumbNail = styled.div`
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-  },
+  }
   margin: 20px 0;
   width:600px;
   height:300px;
@@ -201,4 +215,3 @@ const StThumbNail = styled.div`
   background-color:#ddd;
   line-height:300px;
 `
-

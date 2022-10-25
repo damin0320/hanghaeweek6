@@ -50,7 +50,9 @@ import Comments from "../components/Comments"
       {
         movies.map((movie) => (movie.id === Number(postid.id) ) && (
         <div key={movie.id}>
-        <StThumnail></StThumnail>
+        <StThumnail>
+        <img src={movie.url} />
+        </StThumnail>
         <h1>{movie.title}</h1>
         <div>{movie.content}</div>
           <Stbuttonbox>
@@ -90,7 +92,7 @@ img {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-},
+}
   margin: 20px 0;
   width:600px;
   height:300px;

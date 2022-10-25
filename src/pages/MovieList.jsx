@@ -18,7 +18,6 @@ import { useEffect } from "react";
   const navigator = useNavigate();
   const dispatch = useDispatch();
   const movies = useSelector((state) => state.movies.movies) 
-    
   useEffect(() => {
     dispatch(__getmovies());
   }, [dispatch]);
@@ -35,7 +34,9 @@ import { useEffect } from "react";
             movies.map((movie)=>{
               return (
                 <StlistBox onClick={()=>{navigator(`/MovieDetail/${movie.id}`)}} key={movie.id}>
-                  <StImagebox></StImagebox>
+                  <StImagebox>
+                    <img src={movie.url} />
+                  </StImagebox>
                   <StTextBox>
                   <Ststrong>제목 : {movie.title}</Ststrong>
                   <p>내용 : {movie.content}</p>
