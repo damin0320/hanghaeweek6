@@ -114,25 +114,3 @@ const Stbutton = styled.button`
   border-radius: 6px;
   cursor:pointer;
 `
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 파람스 아이디가 몇번째(indexId) 배열에 있는지 찾는부분 movies[indexId]
-  // const indexId = movies.findIndex((item) => {
-  //   if (item.id == myidid.id) {
-      
-  //   return true;
-  //   }
-  //   return false;
-  //   });
-  //   console.log(indexId)

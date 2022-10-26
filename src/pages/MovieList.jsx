@@ -25,11 +25,15 @@ import { useEffect } from "react";
   return (
     <>
       <Header />
-      
-      <button onClick={onLogoutHandler}>로그아웃</button>
-      
+
       {/* 리스트가 뿌려짐 */}
       <StContainer>
+      <div>
+      <button onClick={onLogoutHandler}>로그아웃</button>
+      </div>
+      <div>
+      <button onClick={()=>{navigator("/addmovie")}}>글쓰기</button>
+      </div>
           {
             movies.map((movie)=>{
               return (

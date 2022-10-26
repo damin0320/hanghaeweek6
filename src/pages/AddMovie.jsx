@@ -1,7 +1,7 @@
 import React, { useState} from "react";
 import Header from "../components/Header"
 import styled from "styled-components"
-import { useNavigate, useParams} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { __addmovies, __getmovies} from "../redux/modules/MoviesSlice"
@@ -11,7 +11,6 @@ import { __addmovies, __getmovies} from "../redux/modules/MoviesSlice"
 const AddMovie = () => {
   // 디스패치를 사용하겠다.
   const dispatch = useDispatch();
-  const {id} = useParams()
   const navigate = useNavigate();
   // setMovieContent({...movieContent,file:fileimage})
   const [prevImg, setPrevImg] = useState("")
@@ -44,7 +43,6 @@ const AddMovie = () => {
         return alert ("URL을 입력해주세요!")
       }else{
         setPrevImg(obj.url)
-        dispatch(__addmovies(obj.url))
         alert("등록이 완료되었습니다.")
       }
     }
@@ -59,6 +57,7 @@ const AddMovie = () => {
         setMovieContent({
           title: "",
           content: "",
+          url: ""
         });
         navigate("/movielist");
 }
