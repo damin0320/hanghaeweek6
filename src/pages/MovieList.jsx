@@ -18,7 +18,6 @@ import { useEffect } from "react";
   const navigator = useNavigate();
   const dispatch = useDispatch();
   const movies = useSelector((state) => state.movies.movies) 
-    
   useEffect(() => {
     dispatch(__getmovies());
   }, [dispatch]);
@@ -26,16 +25,22 @@ import { useEffect } from "react";
   return (
     <>
       <Header />
-      
-      <button onClick={onLogoutHandler}>로그아웃</button>
-      
+
       {/* 리스트가 뿌려짐 */}
       <StContainer>
+      <div>
+      <button onClick={onLogoutHandler}>로그아웃</button>
+      </div>
+      <div>
+      <button onClick={()=>{navigator("/addmovie")}}>글쓰기</button>
+      </div>
           {
             movies.map((movie)=>{
               return (
                 <StlistBox onClick={()=>{navigator(`/MovieDetail/${movie.id}`)}} key={movie.id}>
-                  <StImagebox></StImagebox>
+                  <StImagebox>
+                    <img src={movie.url} />
+                  </StImagebox>
                   <StTextBox>
                   <Ststrong>제목 : {movie.title}</Ststrong>
                   <p>내용 : {movie.content}</p>

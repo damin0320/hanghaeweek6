@@ -50,7 +50,9 @@ import Comments from "../components/Comments"
       {
         movies.map((movie) => (movie.id === Number(postid.id) ) && (
         <div key={movie.id}>
-        <StThumnail></StThumnail>
+        <StThumnail>
+        <img src={movie.url} />
+        </StThumnail>
         <h1>{movie.title}</h1>
         <div>{movie.content}</div>
           <Stbuttonbox>
@@ -90,7 +92,7 @@ img {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-},
+}
   margin: 20px 0;
   width:600px;
   height:300px;
@@ -112,25 +114,3 @@ const Stbutton = styled.button`
   border-radius: 6px;
   cursor:pointer;
 `
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 파람스 아이디가 몇번째(indexId) 배열에 있는지 찾는부분 movies[indexId]
-  // const indexId = movies.findIndex((item) => {
-  //   if (item.id == myidid.id) {
-      
-  //   return true;
-  //   }
-  //   return false;
-  //   });
-  //   console.log(indexId)

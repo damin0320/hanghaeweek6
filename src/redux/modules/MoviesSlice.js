@@ -119,6 +119,7 @@ const moviesSlice = createSlice({
         state.isLoading = false; 
         state.error = action.payload; 
       },
+
     }})
     
 export const {getmovies,addmovies,deletemovie,editmovie} = moviesSlice.actions;
