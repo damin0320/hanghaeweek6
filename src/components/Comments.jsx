@@ -7,12 +7,10 @@ import styled from "styled-components";
 
 const Comment = () => {
     
-  
   const { id } = useParams()
   let newid = Number(id)
   
   const dispatch  = useDispatch ("");
-  //댓글 useState
   const [comment, setComment] = useState({
     username: "",
     content: "",
@@ -41,7 +39,7 @@ const Comment = () => {
     });
   };
 
-  
+
   // 댓글 삭제 버튼
   const onDeleteButton = (id) => {
       dispatch(__deleteComment(id))
