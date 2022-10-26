@@ -36,8 +36,8 @@ export const __addComment = createAsyncThunk(
   "comments/addcomment",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.post(`${SERVICE_URL}/${payload.id}`,payload, {headers : headers});
-      return thunkAPI.fulfillWithValue(data.data);
+      const data = await axios.post(SERVICE_URL,payload, {headers : headers});
+      return thunkAPI.fulfillWithValue(data.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -48,7 +48,7 @@ export const __deleteComment = createAsyncThunk(
   "comments/deletecomment",
   async (payload, thunkAPI) => {
     try {
-      await axios.delete(`${SERVICE_URL}/${payload}`, {headers : headers});
+      await axios.delete(`${SERVICE_URL}/${payload.newid}/${payload.id}`,  {headers : headers});
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -94,7 +94,9 @@ export const commentsSlice = createSlice({
     },
     [__deleteComment.fulfilled]: (state, action) => {
       state.isLoading = false;  
-      state.comments = state.comments.filter((item) => Number(item.id)!== action.payload);
+      console.log(action.payload)
+      state.comments = state.comments.filter((item) => item.commentid !== action.payload.id);
+      // 아이디값이 두개가 들어갔으므로 (payload에 두 개) 특정 아이디값을 지칭해줘야한다.
     },
     [__deleteComment.rejected]: (state, action) => {
       state.isLoading = false; 
