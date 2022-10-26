@@ -1,39 +1,43 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
 import axios from "axios";
+import { getCookie } from "../../cookie/cookie";
 
 
 // initial State
 const initialState = {
-    movies: [
-      {
-        id: 0,
-        title: "",
-        content: "",
-      }
-    ]
+  movies: [],
+  isLoading: false,
+  error: null,
   } 
   const params = {
     key: process.env.REACT_APP_MOVIE,
   };
+  const headers = {
+    'Content-Type' : 'application/json',
+    'Access_Token' : getCookie('Access_Token')
+}
+
   const SERVICE_URL = params.key
   export const __getmovies = createAsyncThunk(
     "movies/getmovies",
     async (payload, thunkAPI) => {
     try {
-    const data = await axios.get(SERVICE_URL);
-    return thunkAPI.fulfillWithValue(data.data);
+    const data = await axios.get(`${SERVICE_URL}/show`, {headers : headers});
+    return thunkAPI.fulfillWithValue(data.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
     }
     );
 
+    
   export const __addmovies = createAsyncThunk(
     "movies/addmovies",
     async (payload, thunkAPI) => {
     try {
-    await axios.post(SERVICE_URL, payload);
-    return thunkAPI.fulfillWithValue(payload);
+    const data = await axios.post(SERVICE_URL, payload, {headers : headers});
+    return thunkAPI.fulfillWithValue(data.data.data);
+    // 깊이 있게 들어갔어야 하는 문제. console로 배열 객체 확인 꼭 하기
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -44,7 +48,7 @@ const initialState = {
     "movies/deletemovie",
     async (payload, thunkAPI) => {
     try {
-    const data = await axios.delete(`${SERVICE_URL}/${payload}`);
+    const data = await axios.delete(`${SERVICE_URL}/${payload}`, {headers : headers});
     return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
         return thunkAPI.rejectWithValue(error);
@@ -57,9 +61,9 @@ const initialState = {
     "movies/editmovie",
     async (payload, thunkAPI) => {
     try {
-    await axios.patch(`${SERVICE_URL}/${payload.id}`, {id:payload.id,content:payload.content});
-    const data = await axios.get(params.key);
-    return thunkAPI.fulfillWithValue(data.data);
+    await axios.patch(`${SERVICE_URL}/${payload.id}`, {id:payload.id,content:payload.content}, {headers : headers});
+    const data = await axios.get(`${SERVICE_URL}/show/${payload.id}`);
+    return thunkAPI.fulfillWithValue(data.data.data);
     } catch (error) {
     return thunkAPI.rejectWithValue(error);
     }
@@ -89,8 +93,12 @@ const moviesSlice = createSlice({
         state.isLoading = true;
       },
       [__addmovies.fulfilled]: (state, action) => {
-        state.isLoading = false; 
-        state.movies.push(action.payload); 
+        state.isLoading = false;
+        // state.movies = action.payload;
+        // (배열 = 객체다...)
+        // .map error : 배열이 아닌 에러...
+        // 구면인 에러.
+        state.movies.push(action.payload)
       },
       [__addmovies.rejected]: (state, action) => {
         state.isLoading = false; 
@@ -116,8 +124,9 @@ const moviesSlice = createSlice({
       },
       [__editmovies.fulfilled]: (state, action) => {
         state.isLoading = false; 
-        state.movies = action.payload; 
+        state.movies = action.payload;
       },
+
       [__editmovies.rejected]: (state, action) => {
         state.isLoading = false; 
         state.error = action.payload; 

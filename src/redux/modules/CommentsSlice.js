@@ -1,6 +1,7 @@
 // 콘솔 주석 확인 완료!
 import { createSlice , createAsyncThunk  } from "@reduxjs/toolkit";
 import axios from "axios";
+import { getCookie } from "../../cookie/cookie";
 
 // initial State
 const initialState = {
@@ -8,27 +9,34 @@ const initialState = {
   isLoading : false,
   error: null,
   }
+  const headers = {
+    'Content-Type' : 'application/json',
+    'Access_Token' : getCookie('Access_Token')
+}
   const params = {
     key: process.env.REACT_APP_COMMENT,
   };
   const SERVICE_URL = params.key
+
+
 export const __getComment = createAsyncThunk(
   "comments/getcomment",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.get(SERVICE_URL);
-      return thunkAPI.fulfillWithValue(data.data);
+      const data = await axios.get(`${SERVICE_URL}/${payload}` , {headers : headers});
+      return thunkAPI.fulfillWithValue(data.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
+
 export const __addComment = createAsyncThunk(
   "comments/addcomment",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.post(SERVICE_URL,payload);
+      const data = await axios.post(`${SERVICE_URL}/${payload.id}`,payload, {headers : headers});
       return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -40,7 +48,7 @@ export const __deleteComment = createAsyncThunk(
   "comments/deletecomment",
   async (payload, thunkAPI) => {
     try {
-      await axios.delete(`${SERVICE_URL}/${payload}`);
+      await axios.delete(`${SERVICE_URL}/${payload}`, {headers : headers});
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

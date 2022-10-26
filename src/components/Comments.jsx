@@ -33,7 +33,7 @@ const Comment = () => {
       return alert("모든 항목을 입력해주세요.");
     }
     
-    dispatch(__addComment({ id: comments.length+1, id: newid, ...comment }));
+    dispatch(__addComment({...comment }));
     
     setComment({
       username: "",
@@ -50,7 +50,7 @@ const Comment = () => {
   
   //디스패치-명령 // 리스트로 
   useEffect(() => {
-    dispatch(__getComment());
+    dispatch(__getComment(newid));
   }, [dispatch]); 
      
   
