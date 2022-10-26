@@ -12,12 +12,15 @@ const initialState = {
       }
     ]
   } 
-  
+  const params = {
+    key: process.env.REACT_APP_MOVIE,
+  };
+  const SERVICE_URL = params.key
   export const __getmovies = createAsyncThunk(
     "movies/getmovies",
     async (payload, thunkAPI) => {
     try {
-    const data = await axios.get("http://localhost:3001/movies");
+    const data = await axios.get(SERVICE_URL);
     return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -29,7 +32,7 @@ const initialState = {
     "movies/addmovies",
     async (payload, thunkAPI) => {
     try {
-    await axios.post("http://localhost:3001/movies", payload);
+    await axios.post(SERVICE_URL, payload);
     return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -41,7 +44,7 @@ const initialState = {
     "movies/deletemovie",
     async (payload, thunkAPI) => {
     try {
-    const data = await axios.delete(`http://localhost:3001/movies/${payload}`);
+    const data = await axios.delete(`${SERVICE_URL}/${payload}`);
     return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
         return thunkAPI.rejectWithValue(error);
@@ -54,8 +57,8 @@ const initialState = {
     "movies/editmovie",
     async (payload, thunkAPI) => {
     try {
-    await axios.patch(`http://localhost:3001/movies/${payload.id}`, {id:payload.id,content:payload.content});
-    const data = await axios.get("http://localhost:3001/movies");
+    await axios.patch(`${SERVICE_URL}/${payload.id}`, {id:payload.id,content:payload.content});
+    const data = await axios.get(params.key);
     return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
     return thunkAPI.rejectWithValue(error);

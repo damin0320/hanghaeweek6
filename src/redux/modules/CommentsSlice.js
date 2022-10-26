@@ -8,12 +8,15 @@ const initialState = {
   isLoading : false,
   error: null,
   }
-
+  const params = {
+    key: process.env.REACT_APP_COMMENT,
+  };
+  const SERVICE_URL = params.key
 export const __getComment = createAsyncThunk(
   "comments/getcomment",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.get("http://localhost:3001/comments");
+      const data = await axios.get(SERVICE_URL);
       return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -25,7 +28,7 @@ export const __addComment = createAsyncThunk(
   "comments/addcomment",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.post("http://localhost:3001/comments",payload);
+      const data = await axios.post(SERVICE_URL,payload);
       return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -37,7 +40,7 @@ export const __deleteComment = createAsyncThunk(
   "comments/deletecomment",
   async (payload, thunkAPI) => {
     try {
-      await axios.delete(`http://localhost:3001/comments/${payload}`);
+      await axios.delete(`${SERVICE_URL}/${payload}`);
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

@@ -8,13 +8,16 @@ const initialState = {
   isLoading : false,
   error : null
 };
-const SERVICE_URL = "http://34.205.33.66:8080"
+const params = {
+  key: process.env.REACT_APP_ACCOUNT,
+};
+const SERVICE_URL = params.key
 export const __userLogin = createAsyncThunk(
   "account/userLogin",
   // login : reducer name, 경로 정해줘야
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.post(`${SERVICE_URL}/account/login`, payload);
+      const data = await axios.post(`${SERVICE_URL}/login`, payload);
       const Access_Token = data.headers.access_token;
       // const refreshToken = data.headers["refresh-token"];
       if (data.status === 200 || data.status === 201) {
@@ -41,7 +44,7 @@ export const  __checkId = createAsyncThunk(
   // type
   async (payload, thunkAPI) => {
     try {
-    const data = await axios.post(`${SERVICE_URL}/account/checkid`, {userid: payload})
+    const data = await axios.post(`${SERVICE_URL}/checkid`, {userid: payload})
       return thunkAPI.fulfillWithValue(data.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -53,7 +56,7 @@ export const  __checkName = createAsyncThunk(
   "account/checkName",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.post(`${SERVICE_URL}/account/checkname`, {nickname: payload})
+      const data = await axios.post(`${SERVICE_URL}/checkname`, {nickname: payload})
       // 415는 타입에러. {}로 감싸서 보낸다.
       return thunkAPI.fulfillWithValue(data.data)
     } catch (error) {
@@ -66,7 +69,7 @@ export const  __userSignUp = createAsyncThunk(
   "account/userSignUp",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.post(`${SERVICE_URL}/account/signup`, payload)
+      const data = await axios.post(`${SERVICE_URL}/signup`, payload)
       return thunkAPI.fulfillWithValue(data.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
