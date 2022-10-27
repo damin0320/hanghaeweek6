@@ -7,12 +7,10 @@ import styled from "styled-components";
 
 const Comment = () => {
     
-  
   const { id } = useParams()
   let newid = Number(id)
   
   const dispatch  = useDispatch ("");
-  //댓글 useState
   const [comment, setComment] = useState({
     comment: "",
   });
@@ -39,7 +37,7 @@ const Comment = () => {
     });
   };
 
-  
+
   // 댓글 삭제 버튼
   const onDeleteButton = (id) => {
       dispatch(__deleteComment({newid, id}))
@@ -65,20 +63,21 @@ return (
         onChange={onChangeInputHandler}
         maxLength={100}
       />
-        <button onClick={onAddCommentButtonHandler}>
+        <Button onClick={onAddCommentButtonHandler}>
             추가하기
-        </button>
+        </Button>
     </StCommentBox>
     
     <StCommentListBox>
-        {   //댓글달기
+        {   
             comments.map((item) => {
                 
                     return(
+
                     <StCommentList key={item.commentid}>
                         <Ststrong>{item.nickname}</Ststrong>
                         <Stspan>{item.comment}</Stspan>
-                        <button onClick={() => onDeleteButton(item.commentid)}>삭제하기</button>
+                        <Button2 onClick={() => onDeleteButton(item.commentid)}>삭제하기</Button2>
                     </StCommentList>
                 ) 
                 }
@@ -90,57 +89,68 @@ return (
   )
 }
 
-
 export default Comment;
 
 const StCommentBox = styled.div`
   display: flex;
-  width: 80%;
-  max-width: 1000px;
-  height: 100px;
+  width: 600px;
   margin: 0 auto;
-  gap: 8px;
-  
+  margin-top:15px;
 `;
 
 const StNameInput = styled.input`
-  width:120px;
-  height:30px;
+  width:100px;
+  height:40px;
   border: 1px color red;
-  
-  
-`;
+`
 
 const StcommentInput = styled.input`
-  width: 800px;
-  height:30px;
+  width: 360px;
+  height:40px;
+  margin-left:10px;
+  text-indent:15px;
 `;
+
+const Button = styled.button`
+  width:120px;
+  margin-left:10px;
+  font-weight:600;
+  color:#fff;
+  background-color:#e50913;
+  
+`
 
 const StCommentListBox = styled.div`
-  width: 80%;
-  max-width: 1000px;
+  width: 600px;
   margin: 0 auto;
-  gap: 8px;
-`;
+`
 
 const StCommentList = styled.div`
-  display:felx;
-  border-bottom: 1px solid #ddd;
-  text-align:center;
-  position: relative;
-  padding:30px;
-  
+  border-bottom: 1px solid #333333;
+  display:flex;
+  padding:20px 0;
 `;
 
 const Ststrong = styled.strong`
-  margin-right:40px;
-  height:30px;
+  width:87px;
+  padding:8px;
+  color:#fff;
+  display:block;
 `;
 
-const Stspan = styled.strong`
-  font-weight:400;
-  width: 80%;
-  max-width: 1000px;
-  margin: 0 auto;
-  gap: 8px;
+const Stspan = styled.span`
+  width:360px;
+  padding:8px;
+  color:#fff;
+  display:block;
 `;
+const Button2 =styled.button`
+  border:none;
+  cursor:pointer;
+  width:120px;
+  height:40px;
+  margin-left:10px;
+  font-weight:600;
+  color:#fff;
+  background-color:#e50913;
+`

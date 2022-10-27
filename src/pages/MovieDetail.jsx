@@ -53,8 +53,8 @@ import Comments from "../components/Comments"
         <StThumnail>
         <img src={movie.imgUrl} />
         </StThumnail>
-        <h1>{movie.title}</h1>
-        <div>{movie.content}</div>
+        <H1>{movie.title}</H1>
+        <P>{movie.content}</P>
           <Stbuttonbox>
               <Stbutton onClick={() => movieDelete(id)}>삭제하기</Stbutton>
               <Stbutton onClick={editToggleHandler} >수정하기</Stbutton>
@@ -67,12 +67,12 @@ import Comments from "../components/Comments"
     </Stcontainer>
     }
     {toggle ? (
-      <div>
-      <input type="text" name="content" onChange={(event) => {setEditContent({
+      <Correction>
+      <Inputcorrection type="text" name="content" onChange={(event) => {setEditContent({
         ...editContent, content:event.target.value
       })}}/>
-      <button onClick={onClickEditHandler}>수정완료</button>
-    </div>
+      <Cbutton onClick={onClickEditHandler}>수정완료</Cbutton>
+    </Correction>
     ):null 
     } 
     <Comments />
@@ -97,20 +97,49 @@ img {
   width:600px;
   height:300px;
   text-align:center;
-  background-color:#ddd;
   line-height:300px;
+  background-color:#ddd;
+  Background-color: transparent;
 `
 const Stbuttonbox = styled.div `
   display:flex;
   justify-content: space-between;
   margin-top:20px;
 `
+const H1 = styled.h1`
+  color:#fff;
+`
+const P = styled.p`
+  color:#fff;
+`
 const Stbutton = styled.button`
   width:190px;
   height:50px;
   text-align:center;
   border:none;
-  background-color:#94B49F;
-  border-radius: 6px;
+  background-color:#e50913;
+  color:#fff;
+  font-weight:600;
   cursor:pointer;
+`
+const Correction = styled.div`
+  width: 600px;
+  margin:0 auto;
+`
+const Inputcorrection =styled.input`
+  margin:20px 0;
+  width:460px;
+  height:40px;
+  text-indent:20px;
+  border: 1px solid #ddd;
+`
+const Cbutton =styled.button`
+  border:none;
+  width:120px;
+  height:44px;
+  background-color:#e50913;
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  margin-left:14px;
 `

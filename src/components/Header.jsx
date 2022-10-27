@@ -1,10 +1,24 @@
 import React from 'react'
 import styled from "styled-components";
+import { getCookie, delCookie } from '../cookie/cookie'
 import { IoMdHome, IoLogoGithub } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
+
 const Header = () => {
+  const navigator = useNavigate();
+  const onLogoutHandler = () => {
+    delCookie("Access_Token")
+    alert("이용하시려면 다시 로그인 해주세요")
+    window.location.replace("/")
+  }
+  
   return (
     <HeadContainer>
-     
+     <BtnBox>
+        <Button onClick={onLogoutHandler}>Logout</Button>
+        <Button onClick={()=>{navigator("/addmovie")}}>Write</Button>
+        <Button onClick={()=>{navigator("/movielist")}}>Main</Button>
+      </BtnBox>
     </HeadContainer>
   )
 }
@@ -15,23 +29,24 @@ const HeadContainer = styled.section`
   grid-column: 1 / 4;
   grid-row: 1 / 2;
   width: 100%;
-  height: 50px;
-  background-color: #94B49F;
+  height: 40px;
+  background-color: #e50913;
   color: #fff;
   display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-end;
   position: fixed;
   top:0;
   left: 0;
-  box-shadow: 0px 2px 10px #9dabca;
+  // box-shadow: 0px 2px 10px #9dabca;
+`
+const Logo = styled.div`
+  
 `
 const HeadLeft = styled.a`
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
-  background-color: transparent;
   display: flex;
   align-items: center;
   .head-ico {
@@ -40,7 +55,19 @@ const HeadLeft = styled.a`
   color: white;
   background-color: transparent;
   height: 40px;
-}
+`
+const Button = styled.button`
+  border:none;
+  width:80px;
+  background-color:transparent;
+  margin:0 5px;
+  color:#fff;
+  font-weight:600;
+  font-size:14px;
+  cursor:pointer;
+`
+const BtnBox =styled.div`
+
 `
 
 const Div = styled.div`

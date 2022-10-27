@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import '../components/style.css'
 import Header from "../components/Header"
 import { useDispatch, useSelector } from "react-redux";
 import { __addmovies, __getmovies} from "../redux/modules/MoviesSlice"
@@ -9,11 +10,13 @@ import { useEffect } from "react";
 
   const MovieList = () => {
     
+
   const onLogoutHandler = () => {
     dispatch(__userLogout())
     alert("이용하시려면 다시 로그인 해주세요")
     window.location.replace("/")
   }
+
 
   const navigator = useNavigate();
   const dispatch = useDispatch();
@@ -26,7 +29,10 @@ import { useEffect } from "react";
   return (
     <>
       <Header />
-
+      {/* <div>
+        <button onClick={onLogoutHandler}>로그아웃</button>
+        <button onClick={()=>{navigator("/addmovie")}}>글쓰기</button>
+      </div> */}
       {/* 리스트가 뿌려짐 */}
       <StContainer>
       <div>
@@ -40,14 +46,15 @@ import { useEffect } from "react";
       (
         <>
           { movies.map((movie)=>{
+
               return (
                 <StlistBox onClick={()=>{navigator(`/MovieDetail/${movie.postid}`)}} key={movie.postid}>
                   <StImagebox>
                     <img src={movie.imgUrl} />
                   </StImagebox>
                   <StTextBox>
-                  <Ststrong>제목 : {movie.title}</Ststrong>
-                  <p>내용 : {movie.content}</p>
+                  <P1>{movie.title}</P1>
+                  <P2>{movie.content}</P2>
                   </StTextBox>
                 </StlistBox>
               )
@@ -58,38 +65,44 @@ import { useEffect } from "react";
       
       </StContainer>
     </>
-
-
-
-
   )
-        }
+
+}
 export default MovieList
 const StContainer = styled.div`
-  margin:0 auto;
-  width:1200px;
-  margin-top:100px;
+  width:1280px;
   display:flex;
   flex-wrap: wrap;
+  margin:0 auto;
+  margin-top:120px;
 `
 const StlistBox = styled.div`
-  width:280px;
-  height:300px;
-  border: 1px solid #ddd;
-  padding:20px 20px;
-  margin: 0 20px 20px 0;
+  margin:10px;
+  background-color: #161616;
 `
 
 const StImagebox = styled.div`
-  width:280px;
   height:200px;
   background-color:#ddd;
-  background-position: center;
-  background-size: cover; 
+  img {
+    width:300px;
+    height:200px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
 `
 const StTextBox = styled.div`
-  margin-top:20px;
+  padding: 12px 5px;
+  text-indent:10px;
 `
-const Ststrong = styled.strong`
-  margin-top:10px;
+const P1 = styled.p`
+  margin:5px 0;
+  font-weight:600;
+  color:#fff;
 `
+const P2 = styled.p`
+  margin:0;
+  color:#fff;
+  font-size:14px;
+` 
