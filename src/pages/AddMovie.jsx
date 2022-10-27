@@ -18,7 +18,7 @@ const AddMovie = () => {
     title: "",
     content:"",
     id:0,
-    url:""
+    imgUrl:""
   })
   
   
@@ -33,16 +33,16 @@ const AddMovie = () => {
     const obj = {
       title : movieContent.title,
       content: movieContent.content,
-      url : movieContent.url,
+      imgUrl : movieContent.imgUrl,
       id:Date.now()
     }
  
     // 사진 등록 및 미리보기
     const postUrl = () => {
-      if(obj.url === "" || obj.url === undefined) {
+      if(obj.imgUrl === "" || obj.imgUrl === undefined) {
         return alert ("URL을 입력해주세요!")
       }else{
-        setPrevImg(obj.url)
+        setPrevImg(obj.imgUrl)
         alert("등록이 완료되었습니다.")
       }
     }
@@ -57,7 +57,7 @@ const AddMovie = () => {
         setMovieContent({
           title: "",
           content: "",
-          url: ""
+          imgUrl: ""
         });
         navigate("/movielist");
 }
@@ -82,7 +82,7 @@ const AddMovie = () => {
               <StThum><img src="/show.jpg" alt="안내이미지" /></StThum>
               <P>구글에서 원하시는 이미지 검색후 우클릭하여 주소를 복사해주세요</P>
               <PutBox>
-                <Input type="text" value={movies.url} name="url" placeholder="사진 URL을 등록해주세요!" onChange={onChangeHandler}/>
+                <Input type="text" value={movies.imgUrl} name="imgUrl" placeholder="사진 URL을 등록해주세요!" onChange={onChangeHandler}/>
                 <Button type="button" onClick={postUrl}>등록완료</Button>
               </PutBox>
           </div>

@@ -14,8 +14,7 @@ const Comment = () => {
   const dispatch  = useDispatch ("");
   //댓글 useState
   const [comment, setComment] = useState({
-    username: "",
-    content: "",
+    comment: "",
   });
   
   const comments = useSelector((state)=> state.comments.comments)
@@ -29,28 +28,27 @@ const Comment = () => {
   
   const onAddCommentButtonHandler = (event) => {
     event.preventDefault();
-    if (comment.content.trim() === "" || comment.username.trim() === "") {
+    if (comment.comment.trim() === "") {
       return alert("모든 항목을 입력해주세요.");
     }
     
-    dispatch(__addComment({ id: comments.length+1, id: newid, ...comment }));
+    dispatch(__addComment({newid, ...comment }));
     
     setComment({
-      username: "",
-      content: "",
+      comment: "",
     });
   };
 
   
   // 댓글 삭제 버튼
   const onDeleteButton = (id) => {
-      dispatch(__deleteComment(id))
+      dispatch(__deleteComment({newid, id}))
       alert ("삭제하시겠습니까?")
   };
   
   //디스패치-명령 // 리스트로 
   useEffect(() => {
-    dispatch(__getComment());
+    dispatch(__getComment(newid));
   }, [dispatch]); 
      
   
@@ -59,18 +57,10 @@ const Comment = () => {
 return (
   <>
     <StCommentBox >
-      <StNameInput
-        placeholder="이름 (5자 이내)"
-        value={comment.username}
-        type="text"
-        name="username"
-        onChange={onChangeInputHandler}
-        maxLength={5}
-      />
       <StcommentInput
         placeholder="(100자 이내로 입력해주세요)"
-        value={comment.content}
-        name="content"
+        value={comment.comment}
+        name="comment"
         type="text"
         onChange={onChangeInputHandler}
         maxLength={100}
@@ -83,17 +73,17 @@ return (
     <StCommentListBox>
         {   //댓글달기
             comments.map((item) => {
-                if (item.id == newid){
+                
                     return(
-                    <StCommentList key={item.id}>
-                        <Ststrong>{item.username}</Ststrong>
-                        <Stspan>{item.content}</Stspan>
-                        <button onClick={() => onDeleteButton(item.id)}>삭제하기</button>
+                    <StCommentList key={item.commentid}>
+                        <Ststrong>{item.nickname}</Ststrong>
+                        <Stspan>{item.comment}</Stspan>
+                        <button onClick={() => onDeleteButton(item.commentid)}>삭제하기</button>
                     </StCommentList>
                 ) 
                 }
                 
-            })
+            )
         }                    
     </StCommentListBox>
   </>

@@ -1,6 +1,7 @@
 // 콘솔 주석 확인 완료!
 import { createSlice , createAsyncThunk  } from "@reduxjs/toolkit";
 import axios from "axios";
+import { getCookie } from "../../cookie/cookie";
 
 // initial State
 const initialState = {
@@ -8,26 +9,38 @@ const initialState = {
   isLoading : false,
   error: null,
   }
+  const headers = {
+    'Content-Type' : 'application/json',
+    'Access_Token' : getCookie('Access_Token')
+}
+  const params = {
+    key: process.env.REACT_APP_COMMENT,
+  };
+  const SERVICE_URL = params.key
+
 
 export const __getComment = createAsyncThunk(
   "comments/getcomment",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.get("http://localhost:3001/comments");
-      return thunkAPI.fulfillWithValue(data.data);
+      const data = await axios.get(`${SERVICE_URL}/${payload}`);
+      return thunkAPI.fulfillWithValue(data.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
+
 export const __addComment = createAsyncThunk(
   "comments/addcomment",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.post("http://localhost:3001/comments",payload);
-      return thunkAPI.fulfillWithValue(data.data);
+      const data = await axios.post(SERVICE_URL,payload, {headers : headers});
+      return thunkAPI.fulfillWithValue(data.data.data);
     } catch (error) {
+      alert("로그인이 필요합니다.")
+      window.location.replace('/')
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -37,9 +50,12 @@ export const __deleteComment = createAsyncThunk(
   "comments/deletecomment",
   async (payload, thunkAPI) => {
     try {
-      await axios.delete(`http://localhost:3001/comments/${payload}`);
+      await axios.delete(`${SERVICE_URL}/${payload.newid}/${payload.id}`,  {headers : headers});
+     
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
+      alert("로그인이 필요합니다.")
+      window.location.replace('/')
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -83,7 +99,8 @@ export const commentsSlice = createSlice({
     },
     [__deleteComment.fulfilled]: (state, action) => {
       state.isLoading = false;  
-      state.comments = state.comments.filter((item) => Number(item.id)!== action.payload);
+      state.comments = state.comments.filter((item) => item.commentid !== action.payload.id);
+      // 아이디값이 두개가 들어갔으므로 (payload에 두 개) 특정 아이디값을 지칭해줘야한다.
     },
     [__deleteComment.rejected]: (state, action) => {
       state.isLoading = false; 
