@@ -4,24 +4,27 @@ import '../components/style.css'
 import Header from "../components/Header"
 import { useDispatch, useSelector } from "react-redux";
 import { __addmovies, __getmovies} from "../redux/modules/MoviesSlice"
-import { getCookie, delCookie } from '../cookie/cookie'
+import { __userLogout } from "../redux/modules/LoginSlice";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
   const MovieList = () => {
     
-  // const onLogoutHandler = () => {
-  //   delCookie("Access_Token")
-  //   alert("이용하시려면 다시 로그인 해주세요")
-  //   window.location.replace("/")
-  // }
+
+  const onLogoutHandler = () => {
+    dispatch(__userLogout())
+    alert("이용하시려면 다시 로그인 해주세요")
+    window.location.replace("/")
+  }
+
 
   const navigator = useNavigate();
   const dispatch = useDispatch();
-  const movies = useSelector((state) => state.movies.movies) 
+  const {movies} = useSelector((state) => state.movies)
   useEffect(() => {
     dispatch(__getmovies());
-  }, [dispatch]);
+  }, [movies.length]);
+  // 와칭해주는게 지켜보다가 변경이 되면 리렌더링(삭제도 됨)
   
   return (
     <>
@@ -32,13 +35,22 @@ import { useEffect } from "react";
       </div> */}
       {/* 리스트가 뿌려짐 */}
       <StContainer>
-      
-          {
-            movies.map((movie)=>{
+      <div>
+      <button onClick={onLogoutHandler}>로그아웃</button>
+      </div>
+      <div>
+      <button onClick={()=>{navigator("/addmovie")}}>글쓰기</button>
+      </div>
+      {movies.length > 0 &&
+      // 조건부 렌더링, length가 0 이상이여야만 렌더링(0개일땐 하지 마!)
+      (
+        <>
+          { movies.map((movie)=>{
+
               return (
-                <StlistBox onClick={()=>{navigator(`/MovieDetail/${movie.id}`)}} key={movie.id}>
+                <StlistBox onClick={()=>{navigator(`/MovieDetail/${movie.postid}`)}} key={movie.postid}>
                   <StImagebox>
-                    <img src={movie.url} />
+                    <img src={movie.imgUrl} />
                   </StImagebox>
                   <StTextBox>
                   <P1>{movie.title}</P1>
@@ -48,6 +60,9 @@ import { useEffect } from "react";
               )
             })
           }
+    </>
+      )}
+      
       </StContainer>
     </>
   )

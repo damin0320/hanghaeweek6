@@ -1,20 +1,29 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { setCookie } from "../../cookie/cookie";
+import { getCookie ,setCookie, delCookie } from "../../cookie/cookie";
 
 const initialState = {
   account : [],
   isLoading : false,
   error : null
 };
-const SERVICE_URL = "http://34.205.33.66:8080"
+const params = {
+  key: process.env.REACT_APP_ACCOUNT,
+};
+const SERVICE_URL = params.key
+
+const headers = {
+  'Content-Type' : 'application/json',
+  'Access_Token' : getCookie('Access_Token')
+}
+
 export const __userLogin = createAsyncThunk(
   "account/userLogin",
   // login : reducer name, 경로 정해줘야
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.post(`${SERVICE_URL}/account/login`, payload);
+      const data = await axios.post(`${SERVICE_URL}/login`, payload);
       const Access_Token = data.headers.access_token;
       // const refreshToken = data.headers["refresh-token"];
       if (data.status === 200 || data.status === 201) {
@@ -36,12 +45,26 @@ export const __userLogin = createAsyncThunk(
   }
 );
 
+export const __userLogout = createAsyncThunk(
+  "account/userLogout",
+  async(payload, thunkAPI) => {
+    try {
+      await axios.delete(`${SERVICE_URL}/logout`, {headers : headers})
+      delCookie("Access_Token")
+      delCookie("nickname")
+      return thunkAPI.fulfillWithValue(payload)
+    }catch(error){
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+)
+
 export const  __checkId = createAsyncThunk(
   "account/checkId",
   // type
   async (payload, thunkAPI) => {
     try {
-    const data = await axios.post(`${SERVICE_URL}/account/checkid`, {userid: payload})
+    const data = await axios.post(`${SERVICE_URL}/checkid`, {userid: payload})
       return thunkAPI.fulfillWithValue(data.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -53,7 +76,7 @@ export const  __checkName = createAsyncThunk(
   "account/checkName",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.post(`${SERVICE_URL}/account/checkname`, {nickname: payload})
+      const data = await axios.post(`${SERVICE_URL}/checkname`, {nickname: payload})
       // 415는 타입에러. {}로 감싸서 보낸다.
       return thunkAPI.fulfillWithValue(data.data)
     } catch (error) {
@@ -66,7 +89,7 @@ export const  __userSignUp = createAsyncThunk(
   "account/userSignUp",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.post(`${SERVICE_URL}/account/signup`, payload)
+      const data = await axios.post(`${SERVICE_URL}/signup`, payload)
       return thunkAPI.fulfillWithValue(data.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -89,6 +112,19 @@ export const LoginSlice = createSlice({
       state.account=action.payload; // 
     },
     [__userLogin.rejected]: (state, action) => {
+      state.isLoading = false; // 에러가 발생했지만, 네트워크 요청이 끝났으니, false로 변경합니다.
+      state.isSuccess = false;
+      state.error = action.payload; // catch 된 error 객체를 state.error에 넣습니다.
+    },
+    [__userLogout.pending]: (state) => {
+      state.isLoading = true; // 네트워크 요청이 시작되면 로딩상태를 true로 변경합니다.
+    },
+    [__userLogout.fulfilled]: (state, action) => {
+      state.isLoading = false; // 네트워크 요청이 끝났으니, false로 변경합니다.
+      state.isSuccess = false;
+      state.account=action.payload; // 
+    },
+    [__userLogout.rejected]: (state, action) => {
       state.isLoading = false; // 에러가 발생했지만, 네트워크 요청이 끝났으니, false로 변경합니다.
       state.isSuccess = false;
       state.error = action.payload; // catch 된 error 객체를 state.error에 넣습니다.

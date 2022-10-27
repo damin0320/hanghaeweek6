@@ -10,17 +10,16 @@ import Comments from "../components/Comments"
   const navigator = useNavigate();
   const dispatch = useDispatch();
   const {movies} = useSelector((state) => state.movies)
-  const  postid  = useParams()
-  
+  const {id}  = useParams()
 
   useEffect(() => {
-    dispatch(__getmovies(postid));
+    dispatch(__getmovies(id));
   }, [dispatch]);
 
 
   // 댓삭제 버튼
   const movieDelete = () => {
-    dispatch(__deletemovies(postid.id))
+    dispatch(__deletemovies(id))
     navigator ("/movielist")
   }
   
@@ -28,13 +27,14 @@ import Comments from "../components/Comments"
   const [editContent, setEditContent] = useState({
     title:"",
     content:"",
-    id:postid.id,
+    id:id,
   });
   
   const onClickEditHandler = () => {
     dispatch(
       __editmovies(editContent)
     )
+    navigator("/movielist")
   }
   
   const [toggle, setToggle] = useState(false);
@@ -48,15 +48,15 @@ import Comments from "../components/Comments"
     {
     <Stcontainer>
       {
-        movies.map((movie) => (movie.id === Number(postid.id) ) && (
-        <div key={movie.id}>
+        movies.map((movie) => (movie.postid === Number(id) ) && (
+        <div key={movie.postid}>
         <StThumnail>
-        <img src={movie.url} />
+        <img src={movie.imgUrl} />
         </StThumnail>
         <H1>{movie.title}</H1>
         <P>{movie.content}</P>
           <Stbuttonbox>
-              <Stbutton onClick={() => movieDelete(postid)}>삭제하기</Stbutton>
+              <Stbutton onClick={() => movieDelete(id)}>삭제하기</Stbutton>
               <Stbutton onClick={editToggleHandler} >수정하기</Stbutton>
               <Stbutton onClick={() => {navigator("/MovieList")}}>뒤로가기</Stbutton>
           </Stbuttonbox>
