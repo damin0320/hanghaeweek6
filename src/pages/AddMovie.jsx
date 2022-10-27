@@ -25,10 +25,10 @@ const AddMovie = () => {
   const {movies} = useSelector((state) => state.movies)
 
   const onChangeHandler = (e) => {
-    const { name, value } = e.target;
+  const { name, value } = e.target;
     setMovieContent({...movieContent,[name]: value,});
-    };
-  
+  };
+    
 
     const obj = {
       title : movieContent.title,
@@ -36,7 +36,7 @@ const AddMovie = () => {
       url : movieContent.url,
       id:Date.now()
     }
- 
+    
     // 사진 등록 및 미리보기
     const postUrl = () => {
       if(obj.url === "" || obj.url === undefined) {
@@ -46,8 +46,8 @@ const AddMovie = () => {
         alert("등록이 완료되었습니다.")
       }
     }
- 
-    // 인풋값 등록버튼
+    
+  // 인풋값 등록버튼
   const onClickButton=(event)=> {
     event.preventDefault();
     if (movieContent.content.trim() === "" || movieContent.title.trim() === "" )  {
@@ -60,7 +60,8 @@ const AddMovie = () => {
           url: ""
         });
         navigate("/movielist");
-}
+  }
+
   //사진등록 토클
   const [toggle, setToggle] = useState(false);
   
@@ -137,9 +138,9 @@ const Input = styled.input`
 const Button = styled.button`
   
   width:100px;
-  height:40px;
+  height:43px;
   border:none;
-  background-color:#94B49F;
+  background-color:#e50913;
   border-radius: 6px;
   color:#fff;
   font-weight:600;
@@ -174,7 +175,7 @@ const Stbutton = styled.button`
   width:600px;
   height:40px;
   border:none;
-  background-color:#94B49F;
+  background-color:#e50913;
   border-radius: 6px;
   font-weight:600;
   cursor: pointer;
@@ -194,7 +195,7 @@ const StButton = styled.button`
   width:600px;
   height:40px;
   border:none;
-  background-color:#94B49F;
+  background-color:#e50913;
   border-radius: 6px;
   color:#fff;
   font-weight:600;
