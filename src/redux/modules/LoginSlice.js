@@ -1,7 +1,7 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { setCookie } from "../../cookie/cookie";
+import { getCookie ,setCookie, delCookie } from "../../cookie/cookie";
 
 const initialState = {
   account : [],
@@ -12,6 +12,12 @@ const params = {
   key: process.env.REACT_APP_ACCOUNT,
 };
 const SERVICE_URL = params.key
+
+const headers = {
+  'Content-Type' : 'application/json',
+  'Access_Token' : getCookie('Access_Token')
+}
+
 export const __userLogin = createAsyncThunk(
   "account/userLogin",
   // login : reducer name, 경로 정해줘야
@@ -38,6 +44,20 @@ export const __userLogin = createAsyncThunk(
     }
   }
 );
+
+export const __userLogout = createAsyncThunk(
+  "account/userLogout",
+  async(payload, thunkAPI) => {
+    try {
+      await axios.delete(`${SERVICE_URL}/logout`, {headers : headers})
+      delCookie("Access_Token")
+      delCookie("nickname")
+      return thunkAPI.fulfillWithValue(payload)
+    }catch(error){
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+)
 
 export const  __checkId = createAsyncThunk(
   "account/checkId",
@@ -92,6 +112,19 @@ export const LoginSlice = createSlice({
       state.account=action.payload; // 
     },
     [__userLogin.rejected]: (state, action) => {
+      state.isLoading = false; // 에러가 발생했지만, 네트워크 요청이 끝났으니, false로 변경합니다.
+      state.isSuccess = false;
+      state.error = action.payload; // catch 된 error 객체를 state.error에 넣습니다.
+    },
+    [__userLogout.pending]: (state) => {
+      state.isLoading = true; // 네트워크 요청이 시작되면 로딩상태를 true로 변경합니다.
+    },
+    [__userLogout.fulfilled]: (state, action) => {
+      state.isLoading = false; // 네트워크 요청이 끝났으니, false로 변경합니다.
+      state.isSuccess = false;
+      state.account=action.payload; // 
+    },
+    [__userLogout.rejected]: (state, action) => {
       state.isLoading = false; // 에러가 발생했지만, 네트워크 요청이 끝났으니, false로 변경합니다.
       state.isSuccess = false;
       state.error = action.payload; // catch 된 error 객체를 state.error에 넣습니다.

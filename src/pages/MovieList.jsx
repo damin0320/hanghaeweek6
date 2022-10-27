@@ -3,14 +3,14 @@ import styled from "styled-components";
 import Header from "../components/Header"
 import { useDispatch, useSelector } from "react-redux";
 import { __addmovies, __getmovies} from "../redux/modules/MoviesSlice"
-import { getCookie, delCookie } from '../cookie/cookie'
+import { __userLogout } from "../redux/modules/LoginSlice";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
   const MovieList = () => {
     
   const onLogoutHandler = () => {
-    delCookie("Access_Token", "nickname")
+    dispatch(__userLogout())
     alert("이용하시려면 다시 로그인 해주세요")
     window.location.replace("/")
   }
