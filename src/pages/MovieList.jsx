@@ -9,15 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
   const MovieList = () => {
-    
-
-  const onLogoutHandler = () => {
-    dispatch(__userLogout())
-    alert("이용하시려면 다시 로그인 해주세요")
-    window.location.replace("/")
-  }
-
-
   const navigator = useNavigate();
   const dispatch = useDispatch();
   const {movies} = useSelector((state) => state.movies)
@@ -29,18 +20,9 @@ import { useEffect } from "react";
   return (
     <>
       <Header />
-      {/* <div>
-        <button onClick={onLogoutHandler}>로그아웃</button>
-        <button onClick={()=>{navigator("/addmovie")}}>글쓰기</button>
-      </div> */}
-      {/* 리스트가 뿌려짐 */}
+
       <StContainer>
-      <div>
-      <button onClick={onLogoutHandler}>로그아웃</button>
-      </div>
-      <div>
-      <button onClick={()=>{navigator("/addmovie")}}>글쓰기</button>
-      </div>
+ 
       {movies.length > 0 &&
       // 조건부 렌더링, length가 0 이상이여야만 렌더링(0개일땐 하지 마!)
       (
