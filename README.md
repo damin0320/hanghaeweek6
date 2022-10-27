@@ -20,7 +20,7 @@
 
 ### <a href="https://shine-industry-2cc.notion.site/2-5a0bc706fae84ae0ad28340f46a1f27d">노션 SA</a>
 
-### <a href="">유튜브 링크</a>
+### <a href="https://youtu.be/dYRAdOVCbNw">유튜브 링크</a>
 
 ---
 <br>
