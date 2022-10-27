@@ -18,7 +18,6 @@ const Comment = () => {
   });
   
   const comments = useSelector((state)=> state.comments.comments)
-  console.log(comments)
   const onChangeInputHandler = (event) => {
   const { name, value } = event.target;
       setComment({

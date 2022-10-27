@@ -23,7 +23,7 @@ export const __getComment = createAsyncThunk(
   "comments/getcomment",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.get(`${SERVICE_URL}/${payload}` , {headers : headers});
+      const data = await axios.get(`${SERVICE_URL}/${payload}`);
       return thunkAPI.fulfillWithValue(data.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -39,6 +39,8 @@ export const __addComment = createAsyncThunk(
       const data = await axios.post(SERVICE_URL,payload, {headers : headers});
       return thunkAPI.fulfillWithValue(data.data.data);
     } catch (error) {
+      alert("로그인이 필요합니다.")
+      window.location.replace('/')
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -49,8 +51,11 @@ export const __deleteComment = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       await axios.delete(`${SERVICE_URL}/${payload.newid}/${payload.id}`,  {headers : headers});
+     
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
+      alert("로그인이 필요합니다.")
+      window.location.replace('/')
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -94,7 +99,6 @@ export const commentsSlice = createSlice({
     },
     [__deleteComment.fulfilled]: (state, action) => {
       state.isLoading = false;  
-      console.log(action.payload)
       state.comments = state.comments.filter((item) => item.commentid !== action.payload.id);
       // 아이디값이 두개가 들어갔으므로 (payload에 두 개) 특정 아이디값을 지칭해줘야한다.
     },

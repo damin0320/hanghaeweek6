@@ -22,7 +22,7 @@ const initialState = {
     "movies/getmovies",
     async (payload, thunkAPI) => {
     try {
-    const data = await axios.get(`${SERVICE_URL}/show`, {headers : headers});
+    const data = await axios.get(`${SERVICE_URL}/show`);
     return thunkAPI.fulfillWithValue(data.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -39,6 +39,8 @@ const initialState = {
     return thunkAPI.fulfillWithValue(data.data.data);
     // 깊이 있게 들어갔어야 하는 문제. console로 배열 객체 확인 꼭 하기
     } catch (error) {
+      alert("로그인이 필요합니다.")
+      window.location.replace('/')
       return thunkAPI.rejectWithValue(error);
     }
     }
@@ -51,6 +53,8 @@ const initialState = {
     const data = await axios.delete(`${SERVICE_URL}/${payload}`, {headers : headers});
     return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
+      alert("로그인이 필요합니다.")
+      window.location.replace('/')
         return thunkAPI.rejectWithValue(error);
     }
     }
@@ -65,6 +69,8 @@ const initialState = {
     const data = await axios.get(`${SERVICE_URL}/show/${payload.id}`);
     return thunkAPI.fulfillWithValue(data.data.data);
     } catch (error) {
+      alert("로그인이 필요합니다.")
+      window.location.replace('/')
     return thunkAPI.rejectWithValue(error);
     }
     }
